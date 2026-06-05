@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 
 import {
   Paper,
@@ -16,20 +16,22 @@ import {
 import { PersonAdd } from "@mui/icons-material";
 import { register } from "@/lib/api";
 
-export function SignInPage() {
+interface SignInPageProps {
+  onRegistered: (message: string) => void;
+}
+
+export function SignInPage({ onRegistered }: SignInPageProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState<'intern' | 'supervisor'>('intern');
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    setSuccess("");
 
     if (!name || !email || !password || !confirmPassword) {
       setError("Por favor, preencha todos os campos.");
@@ -49,11 +51,11 @@ export function SignInPage() {
     setLoading(true);
     try {
       await register({ nome: name, email, senha: password, role });
-      setSuccess("Conta criada com sucesso! Agora faça login.");
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      onRegistered("Conta criada com sucesso! Agora faça login.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao criar conta.");
     } finally {
@@ -124,7 +126,17 @@ export function SignInPage() {
             variant="contained"
             size="large"
             startIcon={<PersonAdd />}
-            sx={{ mt: 2, py: 1.5 }}
+            sx={{    
+              textTransform: 'none',
+              px: 4,
+              py: 1.5,
+              minWidth: 200,
+              bgcolor: '#6b7280',
+              color: '#ffffff',
+              '&:hover': {
+              bgcolor: '#4b5563',
+            }, 
+          }}
           >
             Criar Conta
           </Button>

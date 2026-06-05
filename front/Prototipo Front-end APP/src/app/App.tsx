@@ -12,6 +12,7 @@ export default function App() {
   const [user, setUser] = useState<{ id: number; name: string; role: 'intern' | 'supervisor' } | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [notification, setNotification] = useState('');
   const menuOpen = Boolean(anchorEl);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,11 +40,16 @@ export default function App() {
  if (!user) {
   return showSignIn ? (
     <div>
-      <SignInPage />
+      <SignInPage onRegistered={(message) => {
+        setNotification(message);
+        setShowSignIn(false);
+      }} />
 
       <div className="text-center mt-4">
         <Button
-          onClick={() => setShowSignIn(false)}
+          onClick={() => {
+            setShowSignIn(false);
+          }}
           variant="contained"
           color="primary"
           size="large"
@@ -65,14 +71,14 @@ export default function App() {
     </div>
   ) : (
     <div>
-      <LoginPage onLogin={setUser} />
+      <LoginPage onLogin={setUser} notification={notification} />
 
       <div className="text-center mt-4">
         <Button
-          onClick={() => setShowSignIn(true)}
-          variant="contained"
-          color="primary"
-          size="large"
+          onClick={() => {
+            setShowSignIn(true);
+            setNotification('');
+          }}
           sx={{ textTransform: 'none', px: 4, py: 1.5, minWidth: 200 }}
         >
           Criar Conta

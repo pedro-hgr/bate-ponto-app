@@ -5,9 +5,10 @@ import { login, Usuario } from '@/lib/api';
 
 interface LoginPageProps {
   onLogin: (user: { id: number; name: string; role: 'intern' | 'supervisor' }) => void;
+  notification?: string;
 }
 
-export function LoginPage({ onLogin }: LoginPageProps) {
+export function LoginPage({ onLogin, notification }: LoginPageProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -69,6 +70,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {notification && <Alert severity="success">{notification}</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
 
             <Button
