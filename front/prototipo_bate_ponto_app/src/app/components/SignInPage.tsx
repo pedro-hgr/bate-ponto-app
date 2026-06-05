@@ -114,6 +114,30 @@ export function SignInPage({ onRegistered }: SignInPageProps) {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
+          <div>
+            <FormLabel component="legend" className="mb-2 text-sm font-medium text-gray-700">
+              Selecionar Tipo de Conta
+            </FormLabel>
+            <RadioGroup
+              row
+              value={role}
+              onChange={(e) => setRole(e.target.value as 'intern' | 'supervisor')}
+              aria-label="role"
+              name="role"
+            >
+              <FormControlLabel
+                value="intern"
+                control={<Radio />}
+                label="Estagiário"
+              />
+              <FormControlLabel
+                value="supervisor"
+                control={<Radio />}
+                label="Supervisor"
+              />
+            </RadioGroup>
+          </div>
+
           {error && (
             <Alert severity="error">
               {error}
