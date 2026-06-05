@@ -1,6 +1,0 @@
-backend/
-node_modules/
-.vscode/
-.idea/
-*.log
-*.zip
