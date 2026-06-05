@@ -1,0 +1,8 @@
+target/
+*.log
+uploads/
+*.iml
+.idea/
+.vscode/
+apache-maven-3.9.9/
+apache-maven-3.9.9-bin.zip
