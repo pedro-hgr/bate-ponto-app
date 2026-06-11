@@ -33,8 +33,20 @@ export function LoginPage({ onLogin, notification }: LoginPageProps) {
       const user: Usuario = await login({ email: email.trim(), password });
       onLogin({ id: user.id, name: user.nome, role: user.role });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao entrar.');
-    } finally {
+  const message =
+    err instanceof Error ? err.message : "";
+
+if (
+  message.includes("404") ||
+  message.includes("401")
+) {
+  setError("Usuário ou senha inválidos.");
+} else if (message.includes("Failed to fetch")) {
+  setError("Servidor iniciando ou indisponível. Aguarde alguns segundos e tente novamente.");
+} else {
+  setError("Não foi possível realizar o login.");
+}
+} finally {
       setLoading(false);
     }
   };
@@ -81,8 +93,10 @@ export function LoginPage({ onLogin, notification }: LoginPageProps) {
               startIcon={<LoginIcon />}
               sx={{ mt: 3, py: 1.5 }}
               disabled={loading}
+              
             >
-              Entrar
+              {loading ? "Entrando..." : "Entrar"}
+              
             </Button>
           </form>
           <p>Processos de Negócios - 2026.1</p>

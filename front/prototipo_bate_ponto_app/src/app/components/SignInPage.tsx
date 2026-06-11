@@ -57,8 +57,19 @@ export function SignInPage({ onRegistered }: SignInPageProps) {
       setConfirmPassword("");
       onRegistered("Conta criada com sucesso! Agora faça login.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao criar conta.");
-    } finally {
+  const message =
+    err instanceof Error ? err.message : "";
+
+  if (
+    message.includes("409") ||
+    message.includes("exist") ||
+    message.includes("Failed to fetch")
+  ) {
+    setError("E-mail já cadastrado.");
+  } else {
+    setError("Não foi possível criar a conta.");
+  }
+} finally {
       setLoading(false);
     }
   };
@@ -150,6 +161,7 @@ export function SignInPage({ onRegistered }: SignInPageProps) {
             variant="contained"
             size="large"
             startIcon={<PersonAdd />}
+            disabled={loading}
             sx={{    
               textTransform: 'none',
               px: 4,
@@ -162,7 +174,7 @@ export function SignInPage({ onRegistered }: SignInPageProps) {
             }, 
           }}
           >
-            Criar Conta
+            {loading ? "Criando conta..." : "Criar Conta"}
           </Button>
         </form>
 
